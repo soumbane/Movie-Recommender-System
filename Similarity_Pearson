@@ -1,0 +1,40 @@
+function [sim_p] = sim_mat_p(R,c)
+%Pearson Similarity Matrix - Summary of this function goes here
+% Imput R is the Rating Matrix from Users
+% Output sim_p is the Pearson similarity matrix
+
+%%Pearson correlation-based similarity%%
+m = size(R,1); %2 users
+sim_p = zeros(size(R,2)); %10 movies
+sim_c = zeros(size(R,2));
+
+rating_user1 = [3,4,5,3,4,5,5,4,5,3];
+rating_user2 = [2,4,3,4,4,4,5,5,5,3];
+R = [rating_user1;rating_user2];
+
+R_k = zeros(1,size(R,2));
+R_u = (mean(R'))';
+
+for i=1:m
+    R_k(i) = mean([rating_user1(i),rating_user2(i)]);
+    
+end
+
+for k=1:size(sim_p,1)
+    for l=1:size(sim_p,2)
+        num =0;
+        den_1 =0;
+        den_2 =0;
+        for u=1:m
+            num = num + (R(u,k) - R_k(k)).*(R(u,l) - R_k(l));
+            den_1 = den_1 + (R(u,k) - R_k(k)).*2;
+            den_2 = den_2 + (R(u,l) - R_k(l)).*2;
+        end
+        sim_p(k,l) = (num)./(sqrt(den_1).*sqrt(den_2));
+        
+    end
+end
+
+
+end
+
