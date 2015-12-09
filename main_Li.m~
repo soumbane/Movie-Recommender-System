@@ -12,27 +12,27 @@ sim_p1 = corr(Ytrain');
 %load sim_p.mat
 %%
 load genres.mat
-%%
+
 options = [2,1000,1e-8,1];
-k = [5:5:100]; % # of clusters
+k = [5:5:100];
 for i = 1:length(k)
-    [~,U,~] = fuzzy(genres(:,1:end-1),k(i),options);
+    [~,U,~] = fcm(genres(:,1:end-1),30,options);
     % U = [.98 1 .01 .95;.0013 .0002 .95 .012];
 
     c = .4;
     [S,sim_c] = sim_mat_ac(U,sim_p,c);
 
 
-    u = [501:943];
-    k = [1:1682];
+    u = [500];
+    k = [1:4];
     n = 30;
     P = collab_predict(S,Y,Ytrain,n,u,k);
 
 
-    MAE(i) = mean(mean(abs(P-Y)))
+    MAE = mean(mean(abs(P-Ytrain)))
 
-    Y1 = Y;
+    Y1 = Ytrain;
     Y1(Y1 == 0) = NaN;
 
-    MAE1(i) = nanmean(nanmean(abs(P-Y1)))
+    MAE1 = nanmean(nanmean(abs(P-Y1)))
 end

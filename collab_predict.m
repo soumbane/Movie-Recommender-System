@@ -1,4 +1,4 @@
-function P = collab_predict(S,R,n,u,k)
+function P = collab_predict(S,R,Rtrain,n,u,k)
 % S=similarity matrix for items (nxn)
 % R=Ratings matrix with rows for users and cols for items (mxn)
 % n=number of neighbors to look at
@@ -8,7 +8,7 @@ function P = collab_predict(S,R,n,u,k)
 % P=prediction of rating by users u for items k
 % R = Y;
 [~,r] = size(R);
-meanR = R;
+meanR = Rtrain;
 meanR(meanR==0) = NaN;
 meanR = nanmean(meanR,2);
 P = zeros(length(k),length(u));
