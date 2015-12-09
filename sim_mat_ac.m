@@ -6,6 +6,8 @@ function [sim_ac,sim_c] = sim_mat_ac(U,sim_p,w)
 
 %%Pearson correlation-based similarity%%
 m = size(U,2); %2 users
+% R = Y;
+% w = c;
 % sim_ac = zeros(size(R,2));
 % sim_c = zeros(size(R,2));
 
@@ -56,7 +58,7 @@ m = size(U,2); %2 users
 %     end
 % end
 
-meanU = mean(U,2)
+meanU = mean(U,2);
 
 for k = 1:size(U,2)
     for l = 1:size(U,2)

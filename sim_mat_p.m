@@ -5,7 +5,7 @@ function [sim_p,den] = sim_mat_p(R)
 
 %%Pearson correlation-based similarity%%
 % R = Y;
-m = size(R,1); %2 users
+m = size(R,1); %# of movies
 sim_p = zeros(m); %10 movies
 % sim_c = zeros(size(R,2));
 
@@ -30,10 +30,17 @@ num = zeros(m);
 den = zeros(m);
 for k=1:size(sim_p,1)
     for l=1:size(sim_p,2)
-        num(k,l) = (R(k,:)-R_k(k))*(R(l,:)-R_k(l))';
-        den(k,l) = sqrt((R(k,:)-R_k(k))*(R(k,:)-R_k(k))')*sqrt( (R(l,:) - R_k(l))*(R(l,:) - R_k(l))');
+        num = (R(k,:)-R_k(k))*(R(l,:)-R_k(l))';
+        den_1 = 0;
+        den_2 = 0;
+        for u = 1:size(R,2)
+            den_1 = den_1 + (R(k,u)-R_k(k))^2;
+            den_2 = den_2 + (R(l,u) - R_k(l))^2;
+        end
+        den = sqrt(den_1)*sqrt(den_2);
+        %den(k,l) = sqrt(((R(k,:)-R_k(k))*(R(k,:)-R_k(k))').^2)*sqrt(((R(l,:) - R_k(l))*(R(l,:) - R_k(l))').^2);
         
-        sim_p(k,l) = num(k,l)/den(k,l);
+        sim_p(k,l) = num/den;
     end
     disp(['k = ',num2str(k)])
 end
