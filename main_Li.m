@@ -16,25 +16,24 @@ sim_p1 = corr(Ytrain');
 load genres.mat
 %%
 options = [1.1,1000,1e-8,1];
-k = [5:10:100]; % # of clusters
-%k = 30;
+%k = [5:10:100]; % # of clusters
+k = 30;
 for i = 1:length(k)
-    [~,U,~] = fcm(genres(:,1:end-1),k(i),options);
+    [centers,U,~] = fuzzy(genres(:,1:end-1),k(i),options);
     % U = [.98 1 .01 .95;.013 .002 .95 .12];
 
     c = .4;
     [S,sim_c] = sim_mat_ac(U,sim_p,c);
 
-
 %     u = ind(901:end);
 %     k = [1:1682];
     u = [ind(901:943)];
     mov = [1:1682];
-    n = 20;
-    P = collab_predict(S,Y,Ytrain,n,u,mov);
+    n = 30;
+    P = collab_predict(S,Y,Ytrain,n,u,mov,centers,genres(:,1:end-1),U);
     roundP = round(2*P)/2;
     
-    Y1 = Y(:,u);
+    Y1 = Y(mov,u);
     Y1(Y1 == 0) = NaN;
 
     MAE(i) = nanmean(nanmean(abs(P-Y1)))

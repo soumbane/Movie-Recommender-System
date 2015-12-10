@@ -1,4 +1,4 @@
-function P = collab_predict(S,R,Rtrain,n,u,k,centers,genres,U)
+function P = collab_predict(S,R,Rtrain,n,u,k,centers,genres,U,w)
 % S=similarity matrix for items (nxn)
 % R=Ratings matrix with rows for users and cols for items (mxn)
 % n=number of neighbors to look at
@@ -13,7 +13,6 @@ meanR = Rtrain;
 meanR(meanR==0) = NaN;
 meanR = nanmean(meanR,2);
 P = zeros(length(k),length(u));
-meanU = mean(U,2);
 for i=1:length(u)
     for j=1:length(k)
         if k(j)<=r %check to make sure it's not a new item
@@ -45,7 +44,7 @@ for i=1:length(u)
         else
             %assign new item to cluster
             for a = 1:length(centers)
-                dist(a) = norm(genres(k(j),:) - centers(a,:));
+                dist(a) = norm(genres(:,k(j)) - centers);
             end
             weights = dist/sum(dist);
             for l = 1:r
@@ -53,19 +52,42 @@ for i=1:length(u)
                 den_1 = 0;
                 den_2 = 0;
                 for a = 1:size(U,1)
-                    num = num + (weights(a) - meanU(a))*(U(a,l) - meanU(a));
+                    num = num + (weights(a) - meanU(a))*(U(a,k(l)) - meanU(a));
                     den_1 = den_1 + (weights(a) - meanU(a))^2;
-                    den_2 = den_2 + (U(a,l) - meanU(a))^2;
+                    den_2 = den_2 + (U(a,k(l)) - meanU(a))^2;
                 end
                 sim_c(l) = (num)/(sqrt(den_1).*sqrt(den_2));
             end
             
-            [sim,ind] = sort(sim_c,'descend');
+            for l=1:r
+                ind1 = find(R(k(j),:)>0);
+                ind2 = find(R(k(l),:)>0);
+                ind = ismember(ind1,ind2);
+                R_k = mean(R(k(j),ind1(ind)));
+                R_l = mean(R(k(l),ind1(ind)));
+                num = nansum((R(k(j),ind1(ind))-R_k).*(R(k(l),ind1(ind))-R_l));
+                den_1 = nansum((R(k(j),ind1(ind)) - R_k).^2);
+                den_2 = nansum((R(k(l),ind1(ind)) - R_l).^2);
+                den = sqrt(den_1)*sqrt(den_2);
+                if isnan(num/den)
+                    sim_p(l) = 0;
+                else
+                    sim_p(l) = num/den;
+                end
+            end
+            sim = sim_c*w + (1-w)*sim_p;
+            [sim,ind] = sort(sim,'descend');
             
-            avg = Rtrain(ind(2:n+1),:);
-            avg(avg == 0) = NaN;
-            avg = nanmean(avg);
-            P(j,i) = nanmean(avg);
+            num=0;
+            den=0;
+            for a = 1:n
+                if R(ind(a+1),u(i))>0
+                    num = num + R(ind(a+1),u(i))*sim(a+1);
+                    den = den + abs(sim(a+1));
+    %                 (R(ind(2:n+1),u(i)) - meanR(ind(2:n+1)))'*sim(2:n+1);
+%                 den = sum(abs(sim(2:n+1)))
+                end
+            end
             
             %generate similarity vector
             %calculate prediction using other eqn
