@@ -8,55 +8,7 @@ function [sim_ac,sim_c] = sim_mat_ac(U,sim_p,w)
 m = size(U,2); %2 users
 % R = Y;
 % w = c;
-% sim_ac = zeros(size(R,2));
-% sim_c = zeros(size(R,2));
 
-% rating_user1 = [3,4,5,3,4,5,5,4,5,3];
-% rating_user2 = [2,4,3,4,4,4,5,5,5,3];
-% R = [rating_user1;rating_user2];
-
-% R_k = zeros(1,size(R,2));
-% meanR = R;
-% meanR(meanR==0) = NaN;
-% R_u = nanmean(meanR);
-
-% for u = 1:m
-%     ind = find(R(u,:)>0);
-%     for c = 1:size(U,1)
-% %         sums = 0;
-%         G(c,u) = U(c,ind)*R(u,ind)'/length(ind);
-% %         for i = 1:length(ind)
-% %             sums = sums + U(c,ind(i))*R(u,ind(i));
-% %         end
-% %         G(c,u) = sums;
-%     end
-% %     disp(['u = ',num2str(u)])
-% end
-% 
-% % for i=1:m
-% %     R_k(i) = mean(R(u,i));
-% %     
-% % end
-
-% meanR = R;
-% meanR(meanR==0) = NaN;
-% R_k = nanmean(meanR,2);
-
-%%Adjusted cosine similarity%%
-% for k=1:size(sim_c,1)
-%     for l=1:size(sim_c,2)
-%         num =0;
-%         den_1 =0;
-%         den_2 =0;
-%         for u=1:m
-%             num = num + (R(u,k) - R_u(u)).*(R(u,l) - R_u(u));
-%             den_1 = den_1 + (R(u,k) - R_u(u)).*2;
-%             den_2 = den_2 + (R(u,l) - R_u(u)).*2;
-%         end
-%         sim_c(k,l) = (num)./(sqrt(den_1).*sqrt(den_2));
-%         
-%     end
-% end
 
 meanU = mean(U,2);
 

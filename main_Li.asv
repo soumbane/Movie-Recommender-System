@@ -1,6 +1,5 @@
 clear all, close all
 load movies.mat
-rng(0);
 ind = randperm(943);
 Ytrain = Y(:,ind(1:900));
 
@@ -16,8 +15,8 @@ sim_p1 = corr(Ytrain');
 load genres.mat
 %%
 options = [1.1,1000,1e-8,1];
-k = [5:10:100]; % # of clusters
-%k = 30;
+%k = [5:10:100]; % # of clusters
+k = 30;
 for i = 1:length(k)
     [~,U,~] = fcm(genres(:,1:end-1),k(i),options);
     % U = [.98 1 .01 .95;.013 .002 .95 .12];

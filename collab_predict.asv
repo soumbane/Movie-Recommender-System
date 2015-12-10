@@ -1,4 +1,4 @@
-function P = collab_predict(S,R,Rtrain,n,u,k)
+%function P = collab_predict(S,R,Rtrain,n,u,k)
 % S=similarity matrix for items (nxn)
 % R=Ratings matrix with rows for users and cols for items (mxn)
 % n=number of neighbors to look at
@@ -6,8 +6,8 @@ function P = collab_predict(S,R,Rtrain,n,u,k)
 % u=id's of users of interest
 % k=id's of items of interest
 % P=prediction of rating by users u for items k
-% R = Ytrain;
-% Rtrain = R;
+R = Ytrain;
+Rtrain = R;
 [r,~] = size(R);
 meanR = Rtrain;
 meanR(meanR==0) = NaN;
@@ -21,25 +21,18 @@ for i=1:length(u)
             num = 0;
             den = 0;
             for a = 1:n
-                if R(ind(a+1),u(i))>0
-                    num = num + (R(ind(a+1),u(i)) - meanR(ind(a+1)))*sim(a+1);
-                    den = den + abs(sim(a+1));
-    %                 (R(ind(2:n+1),u(i)) - meanR(ind(2:n+1)))'*sim(2:n+1);
-%                 den = sum(abs(sim(2:n+1)))
-                end
-            end
+                num = num + (R(ind(a+1),u(i)) - meanR(ind(a+1)))*sim(a+1);
+                den = den + abs(sim(a+1));
+%                 (R(ind(2:n+1),u(i)) - meanR(ind(2:n+1)))'*sim(2:n+1);
+%                 den = sum(abs(sim(2:n+1)));
+             end
             %P(i,j) = meanR(k(j))+sum((R(ind(2:n+1),u(i))-meanR(ind(2:n+1))).*sim(2:n+1))...
                 %/sum(abs(sim(2:n+1)));
-%                 num
-%                 den
-%                 i
-%                 j
-%                 pause
-            if isnan(num/den)
-                P(j,i) = meanR(k(j));
-            else
-                P(j,i) = meanR(k(j)) + num/den;
-            end
+                num
+                den
+                i
+                j 
+            P(j,i) = meanR(k(j)) + num/den;
             
         else
             %assign new item to cluster
@@ -50,4 +43,4 @@ for i=1:length(u)
     disp(['u = ',num2str(u(i))])
 end
 
-end
+%end
