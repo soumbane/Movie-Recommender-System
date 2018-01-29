@@ -3,6 +3,8 @@ function [sim_p] = sim_mat_p(R)
 % Imput R is the Rating Matrix from Users
 % Output sim_p is the Pearson similarity matrix
 
+%% Soumyanil Banerjee
+
 %%Pearson correlation-based similarity%%
 % R = Y;
 m = size(R,1); %# of movies
