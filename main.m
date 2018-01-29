@@ -1,7 +1,7 @@
 %% Collaborative Filtering
 % Gaurav Kumar Singh
 % gauravs@umich.edu
-%  
+% Soumyanil Banerjee 
 clear all
 close all
 clc
@@ -86,7 +86,7 @@ num_features = 10;
 X = randn(num_movies, num_features);
 Theta = randn(num_users, num_features);
 
-initial_parameters = [X(:); Theta(:)];
+initial_parameters = [X(:); Theta(:)]; % vectorizing the parameters
 
 % Set options for fmincg
 options = optimset('GradObj', 'on', 'MaxIter', 100);
