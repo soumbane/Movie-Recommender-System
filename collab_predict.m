@@ -1,3 +1,5 @@
+%% Soumyanil Banerjee
+
 function P = collab_predict(S,R,Rtrain,n,u,k,centers,genres,U)
 % S=similarity matrix for items (nxn)
 % R=Ratings matrix with rows for users and cols for items (mxn)
@@ -36,7 +38,7 @@ for i=1:length(u)
 %                 i
 %                 j
 %                 pause
-            if isnan(num/den)
+            if isnan(num/den) % check to see the validity
                 P(j,i) = meanR(k(j));
             else
                 P(j,i) = meanR(k(j)) + num/den;
