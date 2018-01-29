@@ -1,6 +1,9 @@
 function [Ynorm, Ymean] = normalizeRatings(Y, R)
 %NORMALIZERATINGS Preprocess data by subtracting mean rating for every 
 %movie (every row)
+
+%%Soumyanil Banerjee
+
 [m, n] = size(Y);
 Ymean = zeros(m, 1);
 Ynorm = zeros(size(Y));
