@@ -1,3 +1,5 @@
+%% Soumyanil Banerjee
+
 clear all, close all
 load movies.mat
 rng(0);
@@ -18,7 +20,7 @@ load genres.mat
 options = [1.1,1000,1e-8,1];
 %k = [5:10:100]; % # of clusters
 k = 30;
-for i = 1:length(k)
+for i = 1:length(k) % iterating over different genres
     [centers,U,~] = fuzzy(genres(:,1:end-1),k(i),options);
     % U = [.98 1 .01 .95;.013 .002 .95 .12];
 
